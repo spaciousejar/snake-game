@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+import curses
+import random
+import time
+
+def generate_food(sh, sw, snake):
+    while True:
+        y = random.randint(1, sh-2)
+        x = random.randint(1, sw-2)
+        if [y, x] not in snake:
+            return [y, x]
+
+def main(stdscr):
+    curses.curs_set(0)
+    stdscr.nodelay(1)
+    stdscr.timeout(100)
+
+    while True:  # Restart loop
+        sh, sw = stdscr.getmaxyx()
+        w = sw // 2
+        h = sh // 2
+
+        snake = [[h, w], [h, w-1], [h, w-2]]
+        food = generate_food(sh, sw, snake)
+        direction = curses.KEY_RIGHT
+        score = 0
+
+        game_over = False
+        while not game_over:
+            stdscr.clear()
+            stdscr.addstr(0, 0, f'Score: {score}')
+            for y, x in snake:
+                stdscr.addch(y, x, curses.ACS_CKBOARD)
+            stdscr.addch(food[0], food[1], curses.ACS_DIAMOND)
+
+            key = stdscr.getch()
+            if key in [curses.KEY_RIGHT, curses.KEY_LEFT, curses.KEY_UP, curses.KEY_DOWN]:
+                # Prevent reversing direction
+                if (direction == curses.KEY_RIGHT and key != curses.KEY_LEFT) or \
+                   (direction == curses.KEY_LEFT and key != curses.KEY_RIGHT) or \
+                   (direction == curses.KEY_UP and key != curses.KEY_DOWN) or \
+                   (direction == curses.KEY_DOWN and key != curses.KEY_UP):
+                    direction = key
+
+            head = [snake[0][0], snake[0][1]]
+            if direction == curses.KEY_RIGHT:
+                head[1] += 1
+            elif direction == curses.KEY_LEFT:
+                head[1] -= 1
+            elif direction == curses.KEY_DOWN:
+                head[0] += 1
+            elif direction == curses.KEY_UP:
+                head[0] -= 1
+
+            snake.insert(0, head)
+            if head == food:
+                score += 1
+                food = generate_food(sh, sw, snake)
+            else:
+                snake.pop()
+
+            if (head[0] in [0, sh-1] or head[1] in [0, sw-1] or head in snake[1:]):
+                game_over = True
+                stdscr.addstr(sh//2, sw//2 - 5, 'Game Over! Press R to restart, Q to quit')
+                stdscr.refresh()
+                stdscr.nodelay(0)  # Wait for input
+                key = stdscr.getch()
+                if key == ord('r') or key == ord('R'):
+                    stdscr.nodelay(1)  # Back to non-blocking
+                    break  # Restart the game
+                else:
+                    return  # Quit
+
+            stdscr.refresh()
+            time.sleep(0.1)
+
+curses.wrapper(main)
