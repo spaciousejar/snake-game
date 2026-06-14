@@ -1,43 +1,42 @@
 # Snake Game
 
-A classic Snake game implemented in Python using the curses library for terminal-based gameplay.
+[![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Curses](https://img.shields.io/badge/Curses-CLI-00ADD8?style=for-the-badge&logo=gnubash&logoColor=white)]()
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+A classic Snake game implemented in Python using the `curses` library for terminal-based gameplay.
 
 ## Description
 
-Control a snake to eat food and grow longer while avoiding walls and your own tail. The game ends when the snake collides with the boundaries or itself.
+Control a snake to eat food and grow longer while avoiding walls and your own tail. The game ends when the snake collides with the boundaries or itself. Each food item increases your score and the snake's length.
 
 ## Requirements
 
-- Python 3.x
-- curses library (included with Python standard library on most systems)
+- **Python 3.x** — `curses` library included with Python standard library on Linux/macOS
+- **Windows users:** Install `windows-curses` via pip (`pip install windows-curses`)
 
 ## How to Run
 
-Make the script executable and run it:
-
 ```bash
-chmod +x snake
-./snake
+git clone https://github.com/spaciousejar/snake-game.git
+cd snake-game
+python snake.py
 ```
 
-Or run directly with Python:
+### Controls
 
-```bash
-python3 snake
-```
+| Key | Action |
+|-----|--------|
+| Arrow keys / WASD | Move snake |
+| Q | Quit game |
 
-## Controls
+## Features
 
-- **Arrow Keys**: Move the snake (Up, Down, Left, Right)
-- **R**: Restart the game after game over
-- **Q**: Quit the game
+- Classic snake mechanics with increasing difficulty
+- Score tracking
+- Game-over detection (wall and self collision)
+- Terminal-native rendering via curses
 
-## Gameplay
+## License
 
-- Eat the diamond-shaped food (♦) to increase your score and grow the snake
-- Avoid hitting the walls or the snake's own body
-- The game speeds up as you progress
-
-## Screenshot
-
-![Game Screenshot](screenshot.png)
+MIT
